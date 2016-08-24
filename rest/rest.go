@@ -44,6 +44,7 @@ func getJsonResponse() ([]byte, error) {
 }
 
 func main() {
+    fmt.Println("go server running \n")
     http.HandleFunc("/", serveRest)
     http.ListenAndServe("localhost:3000", nil)
 }
