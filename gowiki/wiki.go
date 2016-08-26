@@ -15,7 +15,7 @@ type Page struct {
 }
 
 
-var templates = template.Must(template.ParseFiles("tmpl/edit.html", "tmpl/view.html"))
+var templates = template.Must(template.ParseFiles("tmpl/edit.html", "tmpl/view.html", "tmpl/home.html"))
 
 var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
 
@@ -89,8 +89,17 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
   http.Redirect(w, r, "/view/" + title, http.StatusFound)
 }
 
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+  p, err := loadPage("home")
+  if err != nil {
+    return
+  }
+  renderTemplate(w, "home", p)
+}
+
 func main() {
   fmt.Println("go server running \n")
+  http.HandleFunc("/", homeHandler)
   http.HandleFunc("/view/", viewHandler)
   http.HandleFunc("/edit/", editHandler)
   http.HandleFunc("/save/", saveHandler)
